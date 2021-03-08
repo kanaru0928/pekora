@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="author" content="kanaru">
+    <meta name="keywords" content="ホロライブ,メトロノーム,ぺこら,兎田">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/e83ccfa9aa.js" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <title>ぺこらっぷメトロノーム</title>
+</head>
+
+<body>
+    <header>
+        <h1>ぺこらっぷメトロノーム</h1>
+    </header>
+    <section>
+        <button class="btn" id="start">スタート/ストップ  <span class="icon start" id="start_ico"><i class="fas fa-play"></i></span><span class="icon stop" id="stop_ico"><i class="fas fa-pause"></i></span></button>
+        <table>
+            <tr>
+                <td>
+                    <span>BPM</span>
+                </td>
+                <td>
+                    <input type="range" max="300" min="10" value="120" class="range" id="bpm_range">
+                    <input type="number" max="300" min="10" value="120" class="num" id="bpm_num">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>拍</span>
+                </td>
+                <td>
+                    <input type="range" max="6" min="0" value="4" class="range" id="beat_range">
+                    <input type="number" max="6" min="0" value="4" class="num" id="beat_num">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>音量</span>
+                </td>
+                <td>
+                    <input type="range" max="100" min="0" value="80" class="range" id="vol_range">
+                    <input type="number" max="100" min="0" value="80" class="num" id="vol_num">
+                </td>
+            </tr>
+        </table>
+        <label class="honke"><input type="checkbox" id="honke" class="check">
+            <span class="label">本家準拠</span></label>
+    </section>
+    <div class="carrots">
+        <div class="carrot carrot-1"></div>
+        <div class="carrot carrot-2"></div>
+        <div class="carrot carrot-3"></div>
+
+    </div>
+</body>
+
+</html>
