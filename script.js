@@ -2,9 +2,9 @@ var bpm;
 var beat;
 var play = false;
 var playFlag = true;
-var bun = new Audio("bun.mp3");
-var cha = new Audio("cha.mp3");
-var count = 1;
+var bun = new Audio();
+var cha = new Audio();
+var count;
 var honke = false;
 var startDate;
 
@@ -30,7 +30,7 @@ function listenEvent() {
     $('#start').on('click', function() {
         ss();
     });
-};
+}
 
 function onChangeBpm(i) {
     $('#bpm_range').val(i);
@@ -69,21 +69,13 @@ function ss() {
 
 function tick() {
     if (playFlag) {
-        interval = startDate + 60000 / bpm * count - Date.now();
-        if (interval <= 0) {
-            intreval = Math.ceil((Date.now() - startDate) /
-                (60000 / bpm)) * count - Date.now();
-        }
-        console.log(interval);
-
-        setTimeout(tick, interval);
         let cha_condition;
         let bun_condition;
         if ($("#honke").prop('checked')) {
-            cha_condition = beat != 0 && count % beat == beat - 1;
-            bun_condition = beat != 0 && count % beat != 0;
+            cha_condition = beat != 0 && count % beat === beat - 1;
+            bun_condition = beat != 0 && count % beat !== 0;
         } else {
-            cha_condition = beat != 0 && count % beat == 0;
+            cha_condition = beat != 0 && count % beat === 0;
             bun_condition = true;
         }
 
@@ -94,6 +86,24 @@ function tick() {
             bun.currentTime = 0;
             bun.play();
         }
+
+        let nd = Date.now();
+        let ct = nd - startDate;
+        let mpb = 60000 / bpm;
+        let ext = mpb * count;
+        if(ct < ext - 2 * mpb){
+            console.log("too slow");
+            count = Math.ceil((ext - ct + mpb) / mpb);
+        }else if(ct > ext){
+            console.log("too fast");
+            count += Math.ceil((ct - ext) / mpb);
+        }
+        console.log({count, ct, ext:(mpb * count)});
+        interval = Math.round(startDate + mpb * count - nd);
+        
+        console.log(interval);
+
+        setTimeout(tick, interval);
         count++;
     } else {
         playFlag = true;
@@ -105,4 +115,10 @@ $(function() {
     onChangeBpm(120);
     onChangeBeat(4);
     onChangeVol(80);
+    bun.preload = "auto";
+    cha.preload = "auto";
+    bun.src = "bun.mp3";
+    cha.src = "cha.mp3";
+    bun.load();
+    cha.load();
 });
