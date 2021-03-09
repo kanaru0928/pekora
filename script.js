@@ -2,11 +2,19 @@ var bpm;
 var beat;
 var play = false;
 var playFlag = true;
-var bun = new Audio();
-var cha = new Audio();
 var count;
 var honke = false;
 var startDate;
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var ctx = new AudioContext();
+var gainNode = ctx.createGain();
+var bun_url = "./bun.mp3";
+var cha_url = "./cha.mp3";
+var bun;
+var cha;
+var bun_buffer;
+var cha_buffer;
 
 function listenEvent() {
     $('#bpm_range').on('input', function() {
@@ -67,28 +75,36 @@ function ss() {
     }
 }
 
+function playBuffer(buffer){
+    let src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.connect(ctx.destination);
+}
+
+function playsound(){
+    let cha_condition;
+    let bun_condition;
+    if ($("#honke").prop('checked')) {
+        cha_condition = beat != 0 && count % beat === beat - 1;
+        bun_condition = beat != 0 && count % beat !== 0;
+    } else {
+        cha_condition = beat != 0 && count % beat === 0;
+        bun_condition = true;
+    }
+    if (cha_condition) {
+        cha.pause();
+        cha.currentTime = 0;
+        cha.play();
+    } else if (bun_condition) {
+        cha.pause();
+        bun.currentTime = 0;
+        bun.play();
+    }
+}
+
 function tick() {
     if (playFlag) {
-        let cha_condition;
-        let bun_condition;
-        if ($("#honke").prop('checked')) {
-            cha_condition = beat != 0 && count % beat === beat - 1;
-            bun_condition = beat != 0 && count % beat !== 0;
-        } else {
-            cha_condition = beat != 0 && count % beat === 0;
-            bun_condition = true;
-        }
-
-        if (cha_condition) {
-            cha.pause();
-            cha.currentTime = 0;
-            cha.play();
-        } else if (bun_condition) {
-            cha.pause();
-            bun.currentTime = 0;
-            bun.play();
-        }
-
+        playsound();
         let nd = Date.now();
         let ct = nd - startDate;
         let mpb = 60000 / bpm;
@@ -102,9 +118,7 @@ function tick() {
         }
         console.log({count, ct, ext:(mpb * count)});
         interval = Math.round(startDate + mpb * count - nd);
-        
         console.log(interval);
-
         setTimeout(tick, interval);
         count++;
     } else {
@@ -112,15 +126,19 @@ function tick() {
     }
 }
 
+async function getSound(url){
+    const response = await fetch(url);
+    const arraybuffer = await response.arrayBuffer();
+    const audioBuffer = await ctx.decodeAudioData(arraybuffer);
+    return audioBuffer;
+}
+
 $(function() {
     listenEvent();
     onChangeBpm(120);
     onChangeBeat(4);
     onChangeVol(80);
-    bun.preload = "auto";
-    cha.preload = "auto";
-    bun.src = "bun.mp3";
-    cha.src = "cha.mp3";
-    bun.load();
-    cha.load();
+    bun_buffer = getSound(bun_url);
+    cha_buffer = getSound(cha_url);
+    
 });
