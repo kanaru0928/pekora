@@ -80,9 +80,11 @@ function tick() {
         }
 
         if (cha_condition) {
+            cha.pause();
             cha.currentTime = 0;
             cha.play();
         } else if (bun_condition) {
+            cha.pause();
             bun.currentTime = 0;
             bun.play();
         }
