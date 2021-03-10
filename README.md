@@ -6,11 +6,10 @@
 項目を設定してスタート/ストップを押すだけ。「本家準拠」をオンにすると「ぶんぶんぶんちゃ」から「ぶんぶんちゃ(休符)」になります。ちなみに本家はBPM220です。
 
 ## 対応(動作確認済み)ブラウザ
-Chromium系(Chrome、Edgeなど)
-Opera(PC)
-Android Chrome
-(ios系は動かなった。環境によっては動くかも。)
-(Firefoxは調べてないけど多分動かない。)
+* Chromium系(Chrome、Edgeなど)
+* Opera(PC)
+* Android Chrome
+* (ios系は動かなった。環境によっては動くかも。Firefoxは調べてないけど多分動かない。)
 
 ## BPMメモ
 ### ぺこらっぷ
