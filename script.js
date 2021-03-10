@@ -5,16 +5,13 @@ var playFlag = true;
 var count;
 var honke = false;
 var startDate;
-
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
-var ctx = new AudioContext();
-var gainNode = ctx.createGain();
-var bun_url = "./bun.mp3";
-var cha_url = "./cha.mp3";
+var vol;
+var ctx;
+var gainNode;
+var bun_url = new Request("./bun.mp3");
+var cha_url = new Request("./cha.mp3");
 var bun;
 var cha;
-var bun_buffer;
-var cha_buffer;
 
 function listenEvent() {
     $('#bpm_range').on('input', function() {
@@ -35,7 +32,17 @@ function listenEvent() {
     $('#vol_num').on('change', function() {
         onChangeVol($(this).val());
     });
+    $('#sound_test').on('click', function() {
+        audio = new Audio("cha.mp3");
+        audio.play();
+        alert("cha!");
+    });
+    // $('#start').on('touchstart', function(e) {
+    // });
     $('#start').on('click', function() {
+        const emptySource = ctx.createBufferSource();
+        emptySource.start();
+        emptySource.stop();
         ss();
     });
 }
@@ -47,17 +54,26 @@ function onChangeBpm(i) {
     count = 1;
 }
 
-function onChangeBeat(i) {
-    $('#beat_range').val(i);
-    $('#beat_num').val(i);
-    beat = i;
+function onChangeBeat(b) {
+    $('#beat_range').val(b);
+    $('#beat_num').val(b);
+    beat = b;
+    $('.light').removeClass('last');
+    $(`#light-${b - 1}`).addClass('last');
+    b = b == 0 ? 1 : b;
+    for (let i = 0; i < 6; i++) {
+        if (i < b) {
+            $(`#light-${i}`).show();
+        } else {
+            $(`#light-${i}`).hide();
+        }
+    }
 }
 
 function onChangeVol(i) {
     $('#vol_range').val(i);
     $('#vol_num').val(i);
-    bun.volume = i / 100;
-    cha.volume = i / 100;
+    vol = i;
 }
 
 function ss() {
@@ -65,6 +81,7 @@ function ss() {
     if (play) {
         $('#stop_ico').show();
         $('#start_ico').hide();
+        $('.light').removeClass('on');
         count = 1;
         startDate = Date.now();
         setTimeout(tick, 0);
@@ -75,13 +92,24 @@ function ss() {
     }
 }
 
-function playBuffer(buffer){
-    let src = ctx.createBufferSource();
-    src.buffer = buffer;
-    src.connect(ctx.destination);
+function playRequest(ctx, request) {
+    getSound(request).then((arrayBuffer) => {
+        let src = ctx.createBufferSource();
+        ctx.decodeAudioData(arrayBuffer).then((audioBuffer) => {
+            src.buffer = audioBuffer;
+            src.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            gainNode.gain.value = vol / 100;
+            src.start(0);
+        }).catch((error) => {
+            console.log({ error });
+        });
+    }).catch((error) => {
+        console.log({ error });
+    });
 }
 
-function playsound(){
+function playsound() {
     let cha_condition;
     let bun_condition;
     if ($("#honke").prop('checked')) {
@@ -92,53 +120,70 @@ function playsound(){
         bun_condition = true;
     }
     if (cha_condition) {
-        cha.pause();
-        cha.currentTime = 0;
-        cha.play();
+        playRequest(ctx, cha_url);
     } else if (bun_condition) {
-        cha.pause();
-        bun.currentTime = 0;
-        bun.play();
+        playRequest(ctx, bun_url);
     }
+    let interval = calcDeley();
+    setTimeout(tick, interval);
+    console.log(interval.toString());
+    let b = beat == 0 ? 1 : beat;
+    for (let i = 0; i < b; i++) {
+        if (i < count % b || count % b == 0) {
+            $(`#light-${i}`).addClass('on');
+        }
+    }
+    if (count % b == 0) {
+        setTimeout(() => {
+            $('.light').removeClass('on');
+        }, interval / 2);
+    }
+}
+
+function calcDeley() {
+    let mpb = 60000 / bpm;
+    let ext = mpb * count;
+    let nd = Date.now();
+    let ct = nd - startDate;
+    if (ct < ext - 2 * mpb) {
+        console.log("too slow");
+        count = Math.ceil((ext - ct + mpb) / mpb);
+    } else if (ct > ext) {
+        console.log("too fast");
+        count += Math.ceil((ct - ext) / mpb);
+    }
+    let res = Math.round(startDate + mpb * count - nd);
+    return res;
 }
 
 function tick() {
     if (playFlag) {
         playsound();
-        let nd = Date.now();
-        let ct = nd - startDate;
-        let mpb = 60000 / bpm;
-        let ext = mpb * count;
-        if(ct < ext - 2 * mpb){
-            console.log("too slow");
-            count = Math.ceil((ext - ct + mpb) / mpb);
-        }else if(ct > ext){
-            console.log("too fast");
-            count += Math.ceil((ct - ext) / mpb);
-        }
-        console.log({count, ct, ext:(mpb * count)});
-        interval = Math.round(startDate + mpb * count - nd);
-        console.log(interval);
-        setTimeout(tick, interval);
+        //console.log({ count, ct, ext: (mpb * count) });
+        //console.log(interval);
         count++;
     } else {
         playFlag = true;
     }
 }
 
-async function getSound(url){
+async function getSound(url) {
     const response = await fetch(url);
     const arraybuffer = await response.arrayBuffer();
-    const audioBuffer = await ctx.decodeAudioData(arraybuffer);
-    return audioBuffer;
+    return arraybuffer;
 }
 
 $(function() {
+    try {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        ctx = new AudioContext();
+        gainNode = ctx.createGain()
+    } catch (e) {}
     listenEvent();
     onChangeBpm(120);
     onChangeBeat(4);
     onChangeVol(80);
     bun_buffer = getSound(bun_url);
     cha_buffer = getSound(cha_url);
-    
+
 });

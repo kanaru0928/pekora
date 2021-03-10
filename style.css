@@ -9,8 +9,9 @@
   outline: none; }
 
 h1,
-span,
-label {
+span:not(.ib),
+label,
+a {
   color: #fff;
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); }
 
@@ -21,6 +22,9 @@ html {
   html body {
     margin: 0px auto;
     width: 50rem; }
+    @media screen and (max-width: 499px) {
+      html body {
+        width: 100%; } }
   html header {
     background-color: rgba(255, 255, 255, 0.3);
     padding: 10px 1.5em;
@@ -29,24 +33,34 @@ html {
     border-left: 1px rgba(255, 255, 255, 0.3) solid;
     border-top: 1px rgba(255, 255, 255, 0.3) solid;
     box-shadow: 10px 10px 20px -6px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px); }
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); }
     html header h1 {
       opacity: 0.7;
       letter-spacing: 0.25em;
       font-weight: 200;
       color: #fff;
       font-size: 24pt; }
+    @media screen and (max-width: 499px) {
+      html header {
+        margin: 5vw;
+        font-size: 18pt; } }
   html section {
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 1rem;
     padding: 30px;
-    margin: 80px;
-    margin-top: 10px;
+    margin: 10px 80px;
     box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
     border-left: 1px rgba(255, 255, 255, 0.3) solid;
     border-top: 1px rgba(255, 255, 255, 0.3) solid;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: inline-block; }
+    @media screen and (max-width: 499px) {
+      html section {
+        margin: 5vw;
+        padding: 5% 3%;
+        width: auto; } }
     html section .btn {
       padding: 10px 3em;
       border-radius: 1em; }
@@ -58,6 +72,7 @@ html {
       border-left: 1px rgba(255, 255, 255, 0.3) solid;
       border-top: 1px rgba(255, 255, 255, 0.3) solid;
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-radius: 1em;
       color: #fff;
       text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); }
@@ -76,6 +91,9 @@ html {
         background: rgba(255, 255, 255, 0.3); }
     html section .honke {
       position: relative; }
+      @media screen and (max-width: 499px) {
+        html section .honke {
+          margin: 7% 5%; } }
       html section .honke .check {
         display: none; }
       html section .honke .label {
@@ -91,6 +109,7 @@ html {
           background: transparent;
           border-radius: 4px;
           backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           border-left: 1px rgba(255, 255, 255, 0.3) solid;
           border-top: 1px rgba(255, 255, 255, 0.3) solid;
           box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.15); }
@@ -115,17 +134,26 @@ html {
       margin-top: 10px; }
       html section table td {
         padding: 10px; }
+        @media screen and (max-width: 499px) {
+          html section table td {
+            padding: 3.5%; } }
       html section table span {
-        opacity: 0.7; }
+        opacity: 0.7;
+        width: 2em; }
       html section table .range {
         appearance: none;
+        -webkit-appearance: none;
         height: 8px;
         width: 13em;
         margin-left: 1em;
         margin-bottom: 10px;
         border-radius: 5px; }
+        @media screen and (max-width: 499px) {
+          html section table .range {
+            width: 85%; } }
         html section table .range::-webkit-slider-thumb {
           -webkit-appearance: none;
+          border: none;
           background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
           border-left: 1px #FFBA8F solid;
           border-top: 1px #FFBA8F solid;
@@ -134,6 +162,7 @@ html {
           border-radius: 50%;
           box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); }
       html section table .num {
+        -webkit-appearance: none;
         border-radius: 1em;
         padding: 5px 0.5rem;
         width: 3em;
@@ -141,11 +170,41 @@ html {
         html section table .num::-webkit-outer-spin-button, html section table .num::-webkit-inner-spin-button {
           -webkit-appearance: none;
           margin: 0; }
+    html section .lights {
+      float: right;
+      font-size: 0;
+      margin-top: 20px; }
+      html section .lights .light {
+        transition: 70ms;
+        margin-right: 20px;
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        box-shadow: 4px 4px 30px rgba(50, 50, 50, 0.1);
+        background-color: transparent;
+        border-left: 1px rgba(255, 255, 255, 0.3) solid;
+        border-top: 1px rgba(255, 255, 255, 0.3) solid;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 50%; }
+        html section .lights .light.on {
+          background-color: rgba(255, 155, 35, 0.5);
+          border-left: 1px rgba(191, 112, 100, 0.3) solid;
+          border-top: 1px rgba(191, 112, 100, 0.3) solid;
+          box-shadow: 4px 4px 30px 3px #fda085; }
+          html section .lights .light.on.last {
+            background-color: rgba(255, 10, 10, 0.3);
+            border-left: 1px rgba(191, 112, 100, 0.3) solid;
+            border-top: 1px rgba(191, 112, 100, 0.3) solid;
+            box-shadow: 4px 4px 30px 3px #fda085; }
+    html section .link {
+      margin: 1.5em; }
   html .carrots .carrot {
     display: inline-block;
     position: absolute;
     background: rgba(255, 155, 35, 0.3);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-left: 1px solid rgba(255, 255, 255, 0.3);
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 10px 10px 60px -8px rgba(0, 0, 0, 0.2);
@@ -170,5 +229,17 @@ html {
       top: 250px;
       left: calc(23rem + 50vw - 25rem);
       z-index: -1; }
+    @media screen and (max-width: 499px) {
+      html .carrots .carrot {
+        z-index: -1; } }
+  html .ib {
+    display: inline-block;
+    font-weight: inherit;
+    font-size: inherit; }
+  html .sp {
+    display: none; }
+    @media screen and (max-width: 499px) {
+      html .sp {
+        display: block; } }
 
 /*# sourceMappingURL=style.css.map */

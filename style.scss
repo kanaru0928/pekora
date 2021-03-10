@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;300;400;500;700;800;900&display=swap');
+$sp: 'screen and (max-width: 499px)';
 $white: rgba(256,
 256,
 256,
@@ -14,8 +15,9 @@ $white: rgba(256,
 }
 
 h1,
-span,
-label {
+span:not(.ib),
+label,
+a {
     color: #fff;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
 }
@@ -24,6 +26,9 @@ html {
     body {
         margin: 0px auto;
         width: 50rem;
+        @media #{$sp} {
+            width: 100%;
+        }
     }
     background-image: linear-gradient(-225deg,
     #5D9FFF 0%,
@@ -40,6 +45,7 @@ html {
         border-top: 1px $white solid;
         box-shadow: 10px 10px 20px -6px rgba(0, 0, 0, 0.2);
         backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         h1 {
             opacity: 0.7;
             letter-spacing: 0.25em;
@@ -47,18 +53,27 @@ html {
             color: #fff;
             font-size: 24pt;
         }
+        @media #{$sp} {
+            margin: 5vw;
+            font-size: 18pt;
+        }
     }
     section {
         background-color: $white;
         border-radius: 1rem;
         padding: 30px;
-        margin: 80px;
-        margin-top: 10px;
+        margin: 10px 80px;
         box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
         border-left: 1px $white solid;
         border-top: 1px $white solid;
         backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         display: inline-block;
+        @media #{$sp} {
+            margin: 5vw;
+            padding: 5% 3%;
+            width: auto;
+        }
         .btn {
             padding: 10px 3em;
             border-radius: 1em;
@@ -71,6 +86,7 @@ html {
             border-left: 1px $white solid;
             border-top: 1px $white solid;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 1em;
             color: #fff;
             text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
@@ -90,6 +106,9 @@ html {
         }
         .honke {
             position: relative;
+            @media #{$sp} {
+                margin: 7% 5%;
+            }
             .check {
                 display: none;
             }
@@ -106,6 +125,7 @@ html {
                     background: transparent;
                     border-radius: 4px;
                     backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
                     border-left: 1px $white solid;
                     border-top: 1px $white solid;
                     box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.15);
@@ -141,19 +161,28 @@ html {
             margin-top: 10px;
             td {
                 padding: 10px;
+                @media #{$sp} {
+                    padding: 3.5%;
+                }
             }
             span {
                 opacity: 0.7;
+                width: 2em;
             }
             .range {
                 appearance: none;
+                -webkit-appearance: none;
                 height: 8px;
                 width: 13em;
                 margin-left: 1em;
                 margin-bottom: 10px;
                 border-radius: 5px;
+                @media #{$sp} {
+                    width: 85%;
+                }
                 &::-webkit-slider-thumb {
                     -webkit-appearance: none;
+                    border: none;
                     background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
                     border-left: 1px #FFBA8F solid;
                     border-top: 1px #FFBA8F solid;
@@ -164,6 +193,7 @@ html {
                 }
             }
             .num {
+                -webkit-appearance: none;
                 border-radius: 1em;
                 padding: 5px 0.5rem;
                 width: 3em;
@@ -175,6 +205,40 @@ html {
                 }
             }
         }
+        .lights {
+            float: right;
+            font-size: 0;
+            margin-top: 20px;
+            .light {
+                transition: 70ms;
+                margin-right: 20px;
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                box-shadow: 4px 4px 30px rgba(50, 50, 50, 0.1);
+                background-color: transparent;
+                border-left: 1px $white solid;
+                border-top: 1px $white solid;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: 50%;
+                &.on {
+                    background-color: rgba(255, 155, 35, 0.5);
+                    border-left: 1px rgba(191, 112, 100, 0.3) solid;
+                    border-top: 1px rgba(191, 112, 100, 0.3) solid;
+                    box-shadow: 4px 4px 30px 3px #fda085;
+                    &.last {
+                        background-color: rgba(255, 10, 10, 0.3);
+                        border-left: 1px rgba(191, 112, 100, 0.3) solid;
+                        border-top: 1px rgba(191, 112, 100, 0.3) solid;
+                        box-shadow: 4px 4px 30px 3px #fda085;
+                    }
+                }
+            }
+        }
+        .link {
+            margin: 1.5em;
+        }
     }
     .carrots {
         .carrot {
@@ -182,6 +246,7 @@ html {
             position: absolute;
             background: rgba(255, 155, 35, 0.3);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-left: 1px solid $white;
             border-top: 1px solid $white;
             box-shadow: 10px 10px 60px -8px rgba(0, 0, 0, 0.2);
@@ -209,6 +274,20 @@ html {
                 left: calc(23rem + 50vw - 25rem);
                 z-index: -1;
             }
+            @media #{$sp} {
+                z-index: -1;
+            }
+        }
+    }
+    .ib {
+        display: inline-block;
+        font-weight: inherit;
+        font-size: inherit;
+    }
+    .sp {
+        display: none;
+        @media #{$sp} {
+            display: block;
         }
     }
 }

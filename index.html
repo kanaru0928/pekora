@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <meta name="author" content="kanaru">
     <meta name="keywords" content="ホロライブ,メトロノーム,ぺこら,兎田">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/e83ccfa9aa.js" crossorigin="anonymous"></script>
     <script src="script.js"></script>
@@ -14,7 +15,7 @@
 
 <body>
     <header>
-        <h1>ぺこらっぷメトロノーム</h1>
+        <h1><span class="ib">ぺこらっぷ</span><span class="ib">メトロノーム</span></h1>
     </header>
     <section>
         <button class="btn" id="start">スタート/ストップ  <span class="icon start" id="start_ico"><i class="fas fa-play"></i></span><span class="icon stop" id="stop_ico"><i class="fas fa-pause"></i></span></button>
@@ -49,6 +50,16 @@
         </table>
         <label class="honke"><input type="checkbox" id="honke" class="check">
             <span class="label">本家準拠</span></label>
+        <div class="lights">
+            <div class="light" id="light-0"></div>
+            <div class="light" id="light-1"></div>
+            <div class="light" id="light-2"></div>
+            <div class="light" id="light-3"></div>
+            <div class="light" id="light-4"></div>
+            <div class="light" id="light-5"></div>
+        </div>
+        <br class="sp">
+        <a href="https://github.com/kanaru0928/pekora/blob/main/README.md" target="_blank" class="link">使い方</a>
     </section>
     <div class="carrots">
         <div class="carrot carrot-1"></div>
